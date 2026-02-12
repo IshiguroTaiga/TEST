@@ -44,7 +44,7 @@ export async function getAIResponse(
   history?: Array<{role: 'user' | 'assistant', content: string}>
 ): Promise<{ text: string; links?: GroundingLink[] }> {
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = new GoogleGenAI({ apiKey: "AIzaSyBPW0yIL_z-ntnlpzssHpLMlpgjnsi33P4" });
     
     const contents: any[] = history?.map(msg => ({
       role: msg.role === 'user' ? 'user' : 'model',
