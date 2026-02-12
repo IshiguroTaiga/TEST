@@ -13,6 +13,7 @@
   --header-text: #ffffff;
 }
 
+/* Specific class applied to html/body */
 .dark-theme {
   --bg-color: #0f172a;
   --text-color: #f8fafc;
