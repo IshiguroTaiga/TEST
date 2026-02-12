@@ -22,13 +22,17 @@
   --shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
-body {
-  font-family: 'Inter', sans-serif;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  transition: background-color 0.3s, color 0.3s;
+html, body, #root {
+  min-height: 100vh;
   margin: 0;
   padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
   overflow-x: hidden;
 }
 
@@ -85,7 +89,6 @@ body {
   transform: scale(1.02);
 }
 
-/* Fix for Start AI Consult visibility */
 .btn-gold {
   background-color: var(--mmsu-gold) !important;
   color: var(--mmsu-green) !important;
@@ -213,10 +216,8 @@ body {
 }
 
 .fw-black { font-weight: 900; }
-
 .text-mmsu-gold { color: var(--mmsu-gold) !important; }
 
-/* Ensure modal text is readable */
 .modal-content {
   background-color: var(--card-bg) !important;
   color: var(--text-color) !important;
