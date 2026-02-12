@@ -138,8 +138,8 @@ const Header = ({ user, toggleTheme, onOpenSettings }: any) => (
   <header className="mmsu-header px-4 py-3 sticky top-0 z-50 shadow-md">
     <div className="container mx-auto flex justify-between items-center">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-mmsu-gold text-mmsu-green rounded-xl flex items-center justify-center shadow-lg border border-white/20 transform -rotate-3 transition-transform hover:rotate-0">
-          <i className="fas fa-horse text-xl"></i>
+        <div className="w-10 h-10 bg-mmsu-gold text-mmsu-green rounded-xl flex items-center justify-center shadow-inner border border-white/20">
+          <i className="fas fa-horse-head text-lg"></i>
         </div>
         <div className="flex flex-col">
           <h1 className="text-sm font-black text-white uppercase tracking-tighter leading-none">MMSU Stallion</h1>
@@ -150,9 +150,9 @@ const Header = ({ user, toggleTheme, onOpenSettings }: any) => (
         <button onClick={toggleTheme} className="text-white hover:text-mmsu-gold transition-colors p-2 rounded-full hover:bg-white/10">
           <i className={`fas ${user.theme === 'dark' ? 'fa-sun' : 'fa-moon'} text-lg`}></i>
         </button>
-        <button onClick={onOpenSettings} className="group flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-full border border-white/10 transition-all active:scale-95">
-          <div className="w-6 h-6 bg-mmsu-gold text-mmsu-green rounded-full flex items-center justify-center text-xs shadow-inner">
-            <i className="fas fa-user-shield"></i>
+        <button onClick={onOpenSettings} className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-full border border-white/10 transition-all active:scale-95">
+          <div className="w-6 h-6 bg-mmsu-gold text-mmsu-green rounded-full flex items-center justify-center text-[10px] font-black uppercase">
+            {user.name.charAt(0)}
           </div>
           <span className="text-xs font-bold hidden sm:inline">{user.name.split(' ')[0]}</span>
         </button>
@@ -163,8 +163,9 @@ const Header = ({ user, toggleTheme, onOpenSettings }: any) => (
 
 const Home = ({ user, onStartChat }: any) => {
   const tools = [
-    { label: 'MMSU Official', icon: 'fa-globe', color: 'bg-emerald-600', url: 'https://www.mmsu.edu.ph/' },
-    { label: 'MVLE Portal', icon: 'fa-graduation-cap', color: 'bg-orange-500', url: 'https://mvle4.mmsu.edu.ph/' }
+    { label: 'Official Site', icon: 'fa-globe', color: 'bg-indigo-600', url: 'https://www.mmsu.edu.ph/' },
+    { label: 'MVLE', icon: 'fa-graduation-cap', color: 'bg-orange-500', url: 'https://mvle4.mmsu.edu.ph/' },
+    { label: 'Student Portal', icon: 'fa-user-circle', color: 'bg-emerald-500', url: 'https://mys.mmsu.edu.ph/' }
   ];
 
   const handleToolClick = (url: string) => {
@@ -174,13 +175,13 @@ const Home = ({ user, onStartChat }: any) => {
   return (
     <div className="animate-fadeIn space-y-8 pb-10">
       <div className="mmsu-banner p-8 md:p-12 rounded-[2.5rem] relative overflow-hidden text-white shadow-2xl">
-        <div className="relative z-10 max-w-2xl text-center md:text-left">
-          <span className="bg-mmsu-gold text-mmsu-green px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest mb-6 inline-block shadow-md">AY 2025-2026 • 2nd Sem Portal</span>
+        <div className="relative z-10 max-w-2xl">
+          <span className="bg-mmsu-gold text-mmsu-green px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest mb-6 inline-block">AY 2025-2026 • 2nd Sem Portal</span>
           <h2 className="text-4xl md:text-5xl font-black mb-4 leading-tight">Welcome Home, <br/><span className="text-mmsu-gold">Stallion {user.name.split(' ')[0]}!</span></h2>
-          <p className="text-sm md:text-lg opacity-80 mb-8 font-medium">Empowering academic success at the <span className="text-mmsu-gold font-bold">{user.college}</span>.</p>
-          <button onClick={onStartChat} className="bg-mmsu-gold text-mmsu-green px-8 py-3 rounded-2xl font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl">Consult AI Companion</button>
+          <p className="text-sm md:text-lg opacity-80 mb-8 font-medium">Empowering your academic success at the <span className="text-mmsu-gold font-bold">{user.college}</span>.</p>
+          <button onClick={onStartChat} className="bg-white text-mmsu-green px-8 py-3 rounded-2xl font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl">Consult AI Companion</button>
         </div>
-        <i className="fas fa-horse absolute bottom-0 right-0 text-[18rem] opacity-10 transform translate-x-1/4 translate-y-1/4 -rotate-12 pointer-events-none"></i>
+        <i className="fas fa-horse-head absolute bottom-0 right-0 text-[18rem] opacity-10 transform translate-x-1/4 translate-y-1/4 -rotate-12 pointer-events-none"></i>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -209,22 +210,22 @@ const Home = ({ user, onStartChat }: any) => {
           <h3 className="text-xl font-black flex items-center px-2">
             <span className="w-1.5 h-6 bg-mmsu-gold rounded-full mr-3"></span>Stallion Tools
           </h3>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4">
             {tools.map(tool => (
               <button key={tool.label} onClick={() => handleToolClick(tool.url)} className="stallion-card p-6 rounded-[2rem] text-center group hover:border-mmsu-gold transition-all hover:scale-105">
-                <div className={`${tool.color} w-12 h-12 rounded-2xl flex items-center justify-center text-white mx-auto mb-3 shadow-lg group-hover:rotate-6 transition-transform`}>
-                  <i className={`fas ${tool.icon} text-xl`}></i>
+                <div className="flex items-center justify-center gap-4">
+                  <div className={`${tool.color} w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:rotate-6 transition-transform`}>
+                    <i className={`fas ${tool.icon} text-xl`}></i>
+                  </div>
+                  <span className="text-[10px] font-black uppercase tracking-widest block">{tool.label}</span>
                 </div>
-                <span className="text-[10px] font-black uppercase tracking-widest block">{tool.label}</span>
               </button>
             ))}
           </div>
-          <div className="p-8 rounded-[2.5rem] border-2 border-dashed border-mmsu-gold/30 bg-mmsu-gold/5 text-center space-y-4 shadow-sm">
-            <div className="w-12 h-12 bg-mmsu-gold/20 rounded-full flex items-center justify-center mx-auto text-mmsu-green">
-              <i className="fas fa-shield-alt text-xl"></i>
-            </div>
-            <h5 className="text-[10px] font-black uppercase tracking-widest text-mmsu-green">Security Protocol</h5>
-            <p className="text-[10px] text-gray-400 font-medium leading-relaxed">Stallion AI will never ask for your passwords or private login tokens.</p>
+          <div className="p-8 rounded-[2rem] border-2 border-dashed border-mmsu-gold/30 bg-mmsu-gold/5 text-center space-y-4">
+            <i className="fas fa-shield-alt text-3xl text-mmsu-gold/50"></i>
+            <h5 className="text-[10px] font-black uppercase tracking-widest text-mmsu-green">Security First</h5>
+            <p className="text-[10px] text-gray-400 font-medium leading-relaxed">Never share your credentials. Stallion AI will never ask for your password.</p>
           </div>
         </div>
       </div>
@@ -274,11 +275,11 @@ const ChatRoom = ({ user, mode, setMode }: any) => {
     <div className="flex flex-col h-[calc(100vh-200px)] glass-card rounded-[2.5rem] overflow-hidden border-0 shadow-2xl animate-fadeIn">
       <div className={`px-6 py-4 flex justify-between items-center text-white ${mode === 'TUTORING' ? 'bg-slate-800' : 'bg-mmsu-green'}`}>
         <div className="flex items-center gap-3">
-          <div className="bg-white/20 w-10 h-10 rounded-xl flex items-center justify-center shadow-lg">
-            <i className={`fas ${mode === 'TUTORING' ? 'fa-user-graduate' : 'fa-horse'}`}></i>
+          <div className="bg-white/20 w-10 h-10 rounded-xl flex items-center justify-center">
+            <i className={`fas ${mode === 'TUTORING' ? 'fa-user-graduate' : 'fa-robot'}`}></i>
           </div>
           <div>
-            <h3 className="font-black text-xs uppercase tracking-widest leading-none">Stallion {mode === 'TUTORING' ? 'Tutor' : 'Assistant'}</h3>
+            <h3 className="font-black text-xs uppercase tracking-widest leading-none">Stallion Assistant</h3>
             <span className="text-[9px] font-bold opacity-70">Active • {user.college.split(' ')[0]}</span>
           </div>
         </div>
