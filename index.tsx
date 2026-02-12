@@ -58,7 +58,7 @@ const MOCK_COURSES = [
 // --- AI SERVICE ---
 async function getAIResponse(prompt: string, college: string, mode: ChatMode, studentId?: string, history?: any[]) {
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+    const ai = new GoogleGenerativeAI({ apiKey: process.env.API_KEY || '' });
     const contents = history?.map(m => ({
       role: m.role === 'user' ? 'user' : 'model',
       parts: [{ text: m.content }]
