@@ -12,8 +12,7 @@ export default defineConfig(({ mode }) => {
       },
       plugins: [react()],
       define: {
-        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
+        'import.meta.env.VITE_GEMINI_API_KEY': JSON.stringify(env.VITE_GEMINI_API_KEY),
       },
       resolve: {
         alias: {
@@ -29,6 +28,23 @@ export default defineConfig(({ mode }) => {
             main: path.resolve(__dirname, 'index.html')
           }
         }
-      }
+      },
+      // ✅ ADD THIS - Fix MIME type issues
+      server: {
+        fs: {
+          strict: false,
+          allow: ['.'],
+        },
+        hmr: true,
+      },
+      optimizeDeps: {
+        include: ['react', 'react-dom', '@google/genai'],
+        esbuildOptions: {
+          loader: {
+            '.ts': 'tsx',
+            '.tsx': 'tsx',
+          },
+        },
+      },
     };
 });
