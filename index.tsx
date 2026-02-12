@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI } from "@google/generative-ai";
 
 // --- TYPES ---
 export type Campus = 'Batac' | 'Laoag' | 'Currimao' | 'Dingras';
