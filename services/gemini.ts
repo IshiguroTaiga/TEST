@@ -44,16 +44,7 @@ export async function getAIResponse(
   history?: Array<{role: 'user' | 'assistant', content: string}>
 ): Promise<{ text: string; links?: GroundingLink[] }> {
   try {
-    const apiKey = process.env.API_KEY;
-    
-    if (!apiKey) {
-      console.error("STALLION AI ERROR: API Key is missing. If you are on GitHub Pages, process.env.API_KEY is not being injected correctly.");
-      return { 
-        text: "System connection error: The AI core is not responding because the API key is not configured in this environment. Please ensure you are accessing via the official preview link." 
-      };
-    }
-
-    const ai = new GoogleGenAI({ apiKey });
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     
     const contents: any[] = history?.map(msg => ({
       role: msg.role === 'user' ? 'user' : 'model',
