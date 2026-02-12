@@ -1,4 +1,3 @@
-
 {
   "name": "mmsu-stallion-companion",
   "private": true,
@@ -10,8 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@vitejs/plugin-react": "^4.2.1", // MOVE THIS HERE
     "@google/generative-ai": "^0.21.0",
+    "@vitejs/plugin-react": "^4.2.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
