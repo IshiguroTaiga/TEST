@@ -44,45 +44,28 @@ export async function getAIResponse(
   history?: Array<{role: 'user' | 'assistant', content: string}>
 ): Promise<{ text: string; links?: GroundingLink[] }> {
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-    
-    const contents: any[] = history?.map(msg => ({
-      role: msg.role === 'user' ? 'user' : 'model',
-      parts: [{ text: msg.content }]
-    })) || [];
-
-    contents.push({
-      role: 'user',
-      parts: [{ text: prompt }]
+    const genAI = new GoogleGenerativeAI(process.env.API_KEY || '');
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-1.5-flash",
+      systemInstruction: GET_SYSTEM_INSTRUCTION(mode, college, studentId)
     });
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
-      contents,
-      config: {
-        systemInstruction: GET_SYSTEM_INSTRUCTION(mode, college, studentId),
-        tools: [{ googleSearch: {} }],
-        temperature: 0.7,
-      },
+    const chat = model.startChat({
+      history: history?.map(msg => ({
+        role: msg.role === 'user' ? 'user' : 'model',
+        parts: [{ text: msg.content }]
+      })) || [],
     });
 
-    const text = response.text || "I apologize, but I am currently unable to process your inquiry.";
-    
-    // Extract grounding links from search results
-    const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
-    const links: GroundingLink[] = groundingChunks
-      .filter(chunk => chunk.web)
-      .map(chunk => ({
-        title: chunk.web?.title || 'MMSU Reference',
-        uri: chunk.web?.uri || '',
-        type: 'search'
-      }));
+    const result = await chat.sendMessage(prompt);
+    const response = await result.response;
+    const text = response.text();
 
-    return { text, links };
+    return { text, links: [] }; // Grounding links are more complex with this SDK
   } catch (error) {
     console.error("Gemini API Error:", error);
     return { 
-      text: "The university server is experiencing high traffic. Please try again later or consult the official MMSU student portal." 
+      text: "The university server is experiencing high traffic. Please try again later." 
     };
   }
 }
