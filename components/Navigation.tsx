@@ -12,25 +12,26 @@ export const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab 
   const tabs: { id: Tab; icon: string; label: string }[] = [
     { id: 'home', icon: 'fas fa-home', label: 'Home' },
     { id: 'chat', icon: 'fas fa-comments', label: 'AI Chat' },
-    { id: 'courses', icon: 'fas fa-book', label: 'Courses' },
-    { id: 'tutors', icon: 'fas fa-user-graduate', label: 'Tutors' },
+    { id: 'courses', icon: 'fas fa-book', label: 'Catalog' },
+    { id: 'tutors', icon: 'fas fa-user-graduate', label: 'AI Tutor' },
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 md:relative md:border-t-0 md:bg-transparent">
-      <div className="max-w-7xl mx-auto flex justify-around md:justify-start md:space-x-8 md:px-4 md:py-2">
+    <nav className="bg-white dark:bg-slate-800 rounded-3xl border border-gray-200 dark:border-slate-700 p-2 shadow-sm">
+      <div className="flex flex-wrap items-center justify-around md:justify-start md:space-x-4">
         {tabs.map((tab) => (
           <button
             key={tab.id}
+            type="button"
             onClick={() => setActiveTab(tab.id)}
-            className={`flex flex-col md:flex-row items-center space-y-1 md:space-y-0 md:space-x-2 py-3 px-4 transition-all duration-200 ${
+            className={`flex items-center space-x-3 py-3 px-6 rounded-2xl transition-all duration-200 ${
               activeTab === tab.id 
-                ? 'text-mmsu-green border-t-2 md:border-t-0 md:border-b-2 border-mmsu-green font-bold' 
-                : 'text-gray-500 hover:text-mmsu-green'
+                ? 'bg-mmsu-green text-white dark:bg-mmsu-gold dark:text-mmsu-green font-bold shadow-lg shadow-mmsu-green/20 dark:shadow-mmsu-gold/10' 
+                : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-700'
             }`}
           >
-            <i className={`${tab.icon} text-xl md:text-base`}></i>
-            <span className="text-[10px] md:text-sm font-medium">{tab.label}</span>
+            <i className={`${tab.icon} text-sm`}></i>
+            <span className="text-xs font-black uppercase tracking-widest">{tab.label}</span>
           </button>
         ))}
       </div>
