@@ -1,7 +1,5 @@
-
 import React from 'react';
-
-type Tab = 'chat' | 'courses' | 'tutors' | 'home';
+import { Tab } from '../types';
 
 interface NavigationProps {
   activeTab: Tab;
@@ -14,6 +12,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab 
     { id: 'chat', icon: 'fas fa-comments', label: 'AI Chat' },
     { id: 'courses', icon: 'fas fa-book', label: 'Catalog' },
     { id: 'tutors', icon: 'fas fa-user-graduate', label: 'AI Tutor' },
+    { id: 'files', icon: 'fas fa-folder-open', label: 'Vault' },
   ];
 
   return (
