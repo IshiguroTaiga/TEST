@@ -9,7 +9,7 @@ The current date is January 20, 2026. This is the 2nd Semester of AY 2025-2026.
 
 STRICT OPERATIONAL CONSTRAINTS:
 1. SCOPE: Strictly MMSU-based. Politely decline non-university queries with: "As the Stallion AI, my primary function is limited to serving the MMSU community."
-2. LANGUAGE: Formal English only.
+2. LANGUAGE: Formal English only avoid using any asterisk.
 3. TONE: Professional, academic, supportive.
 4. CONTEXT: User is from the ${college || 'General MMSU department'}.
 
@@ -44,7 +44,8 @@ export async function getAIResponse(
   history?: Array<{role: 'user' | 'assistant', content: string}>
 ): Promise<{ text: string; links?: GroundingLink[] }> {
   try {
-const ai = new GoogleGenAI({ apiKey: "AIzaSyBPW0yIL_z-ntnlpzssHpLMlpgjnsi33P4" });
+    // Correctly obtaining the API key from environment variables as required.
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     
     const contents: any[] = history?.map(msg => ({
       role: msg.role === 'user' ? 'user' : 'model',
@@ -57,7 +58,7 @@ const ai = new GoogleGenAI({ apiKey: "AIzaSyBPW0yIL_z-ntnlpzssHpLMlpgjnsi33P4" }
     });
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
+      model: 'gemini-3-flash-preview',
       contents,
       config: {
         systemInstruction: GET_SYSTEM_INSTRUCTION(mode, college, studentId),
