@@ -1,20 +1,3 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+UmaAI was based off of on our previous Chatbot on Artificial Intelligence subject, which focuses more on tourism Ilocos Norte Tourism Chatbot thus we came up an idea to reuse this and update its function and limitation making it centralized as an MMSU Companion unlike Ilocos Norte Tourism Chatbot which centralized mostly on Tourism on Ilocos Norte.
 
-# Run and deploy your AI Studio app
-
-This contains everything you need to run your app locally.
-
-View your app in AI Studio: https://ai.studio/apps/1ac9f35e-bd1d-44b1-80ce-01781c05567e
-
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+References: Ilocos Norte Tourism Chatbot https://apaydakaditoy.infinityfreeapp.com/ README - Google Docs
