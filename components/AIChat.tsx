@@ -75,7 +75,7 @@ export const AIChat: React.FC<AIChatProps> = ({ college, studentId, onUpdateStud
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-220px)] md:h-[750px] bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-2xl border border-gray-100 dark:border-slate-700 overflow-hidden animate-fadeIn">
+    <div className="flex flex-col h-[calc(100dvh-140px)] sm:h-[calc(100vh-120px)] lg:h-[calc(100vh-100px)] bg-white dark:bg-slate-800 rounded-[1.5rem] sm:rounded-[2.5rem] shadow-2xl border border-gray-100 dark:border-slate-700 overflow-hidden animate-fadeIn">
       {/* Chat Header */}
       <div className={`px-8 py-5 flex items-center justify-between shadow-lg relative z-10 transition-colors ${
         mode === 'TUTORING' ? 'bg-mmsu-gold text-mmsu-green' : 'bg-mmsu-green text-white'
