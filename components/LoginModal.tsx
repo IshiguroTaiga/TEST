@@ -43,7 +43,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onLogin, onClose, isDark
               type="text"
               value={id}
               onChange={(e) => {
-                setId(e.target.value);
+                const val = e.target.value.replace(/[^0-9-]/g, '');
+                setId(val);
                 setError('');
               }}
               placeholder="e.g. 21-123456"
