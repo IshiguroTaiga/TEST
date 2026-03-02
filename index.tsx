@@ -63,6 +63,22 @@ const MOCK_CALENDAR_EVENTS = [
   { id: 'e6', date: '2026-03-05', title: 'Midterm Examination Week', type: 'academic' },
   { id: 'e7', date: '2026-03-06', title: 'Midterm Examination Week', type: 'academic' },
   { id: 'e8', date: '2026-03-25', title: 'University Convocation', type: 'event' },
+  { id: 'e9', date: '2026-05-01', title: 'Labor Day', type: 'holiday' },
+  { id: 'e10', date: '2026-05-27', title: 'EID AL-ADHA (TENTATIVE)', type: 'holiday' },
+  { id: 'e10', date: '2026-05-28', title: 'EID AL-ADHA DAY (TENTATIVE)', type: 'holiday' },
+  { id: 'e11', date: '2026-06-12', title: 'INDEPENDENCE DAY', type: 'holiday' },
+  { id: 'e12', date: '2026-06-17', title: 'AMUN JADID (TENTATIVE)', type: 'holiday' },
+  { id: 'e13', date: '2026-08-21', title: 'NINOY AQUINO DAY', type: 'holiday' },
+  { id: 'e14', date: '2026-08-26', title: 'Maulid un-Nabi (TENTATIVE)', type: 'holiday' },
+  { id: 'e15', date: '2026-08-31', title: 'NATIONAL HEROES DAY', type: 'holiday' },
+  { id: 'e16', date: '2026-11-01', title: 'All Saints Day', type: 'holiday' },
+  { id: 'e17', date: '2026-11-02', title: 'All Souls Day', type: 'holiday' },
+  { id: 'e18', date: '2026-11-30', title: 'Bonifacio Day', type: 'holiday' },
+  { id: 'e19', date: '2026-12-08', title: 'Feast of the Immaculate Conception', type: 'holiday' },
+  { id: 'e20', date: '2026-12-24', title: 'Christmas Eve', type: 'holiday' },
+  { id: 'e21', date: '2026-12-25', title: 'Christmas Day', type: 'holiday' },
+  { id: 'e22', date: '2026-12-30', title: 'Rizal Day', type: 'holiday' },
+  { id: 'e22', date: '2026-12-31', title: 'New Years Eve', type: 'holiday' },
 ];
 
 const Calendar = ({ isDark }: { isDark: boolean }) => {
