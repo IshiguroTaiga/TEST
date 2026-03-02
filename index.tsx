@@ -66,7 +66,7 @@ const MOCK_CALENDAR_EVENTS = [
 ];
 
 const Calendar = ({ isDark }: { isDark: boolean }) => {
-  const [currentDate, setCurrentDate] = useState(new Date(2026, 2, 1)); // March 2026
+  const [currentDate, setCurrentDate] = useState(new Date()); // Use real current date
   const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
   const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
   
@@ -75,7 +75,7 @@ const Calendar = ({ isDark }: { isDark: boolean }) => {
 
   const prevMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
   const nextMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
-  const goToToday = () => setCurrentDate(new Date(2026, 2, 1));
+  const goToToday = () => setCurrentDate(new Date());
 
   const calendarDays = [];
   // Fill empty slots for previous month
@@ -131,7 +131,10 @@ const Calendar = ({ isDark }: { isDark: boolean }) => {
         <div className="grid grid-cols-7 auto-rows-[120px] sm:auto-rows-[160px]">
           {calendarDays.map((day, idx) => {
             const events = day ? getEventsForDay(day) : [];
-            const isToday = day === 1 && monthName === 'March' && year === 2026; // Mocking today as March 1
+            const realToday = new Date();
+            const isToday = day === realToday.getDate() && 
+                            currentDate.getMonth() === realToday.getMonth() && 
+                            currentDate.getFullYear() === realToday.getFullYear();
             
             return (
               <div key={idx} className={`p-2 sm:p-4 border-r border-b dark:border-white/5 relative group transition-colors ${day ? 'hover:bg-slate-50 dark:hover:bg-slate-900/30' : 'bg-slate-50/30 dark:bg-slate-900/10'}`}>
