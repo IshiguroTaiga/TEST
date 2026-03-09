@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
 import { GoogleGenAI } from "@google/genai";
@@ -227,6 +228,30 @@ const App = () => {
   const [chatMode, setChatMode] = useState<ChatMode>('GENERAL');
   const [showProfile, setShowProfile] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [toasts, setToasts] = useState<{id: number, message: string}[]>([]);
+
+  const addToast = (message: string) => {
+    const id = Date.now();
+    setToasts(prev => [...prev, { id, message }]);
+    setTimeout(() => {
+      setToasts(prev => prev.filter(t => t.id !== id));
+    }, 3000);
+  };
+
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 400);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const [messages, setMessages] = useState<Message[]>([
     { id: '1', role: 'assistant', content: 'Agbiag, Stallion! 🐎 I am your AI Companion. How can I assist your academic journey today?', timestamp: new Date() }
   ]);
@@ -333,7 +358,11 @@ const App = () => {
           </div>
         </div>
         <div className="flex items-center gap-2 sm:gap-4">
-          <button onClick={() => setUser(p => ({ ...p, theme: p.theme === 'dark' ? 'light' : 'dark' }))} className="p-2 rounded-lg sm:p-2.5 sm:rounded-xl hover:bg-white/10 transition-all">
+          <button onClick={() => {
+            const newTheme = user.theme === 'dark' ? 'light' : 'dark';
+            setUser(p => ({ ...p, theme: newTheme }));
+            addToast(newTheme === 'dark' ? 'Dark Mode Activated' : 'Light Mode Activated');
+          }} className="p-2 rounded-lg sm:p-2.5 sm:rounded-xl hover:bg-white/10 transition-all">
             <i className={`fas ${user.theme === 'dark' ? 'fa-sun' : 'fa-moon'}`}></i>
           </button>
           <div onClick={() => setShowProfile(true)} className="flex items-center gap-2 sm:gap-3 bg-white/10 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg sm:rounded-xl border border-white/10 cursor-pointer hover:bg-white/20 transition-all">
@@ -417,9 +446,22 @@ const App = () => {
                   <p className="text-[8px] sm:text-[10px] font-bold uppercase tracking-widest mt-1 opacity-70">Grounded in MMSU Intelligence</p>
                 </div>
               </div>
-              <div className="flex bg-black/10 p-1 rounded-xl sm:p-1.5 sm:rounded-2xl border border-white/10 w-full sm:w-auto">
-                <button onClick={() => setChatMode('GENERAL')} className={`flex-1 sm:flex-none px-4 sm:px-6 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-widest transition-all ${chatMode === 'GENERAL' ? 'bg-white text-mmsu-green shadow-sm' : 'opacity-50 hover:opacity-100'}`}>Assistant</button>
-                <button onClick={() => setChatMode('TUTORING')} className={`flex-1 sm:flex-none px-4 sm:px-6 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-widest transition-all ${chatMode === 'TUTORING' ? 'bg-mmsu-green text-white shadow-sm' : 'opacity-50 hover:opacity-100'}`}>Tutor</button>
+              <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto">
+                <button 
+                  onClick={() => {
+                    setMessages([{ id: '1', role: 'assistant', content: 'Agbiag, Stallion! 🐎 I am your AI Companion. How can I assist your academic journey today?', timestamp: new Date() }]);
+                    addToast('Conversation Reset');
+                  }}
+                  className="p-2 rounded-lg hover:bg-black/10 transition-all text-[9px] sm:text-[10px] font-black uppercase tracking-widest flex items-center gap-2 border border-white/20"
+                  title="Reset Conversation"
+                >
+                  <i className="fas fa-undo"></i>
+                  <span className="hidden xs:inline">Reset</span>
+                </button>
+                <div className="flex bg-black/10 p-1 rounded-xl sm:p-1.5 sm:rounded-2xl border border-white/10 flex-1 sm:flex-none">
+                  <button onClick={() => setChatMode('GENERAL')} className={`flex-1 sm:flex-none px-4 sm:px-6 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-widest transition-all ${chatMode === 'GENERAL' ? 'bg-white text-mmsu-green shadow-sm' : 'opacity-50 hover:opacity-100'}`}>Assistant</button>
+                  <button onClick={() => setChatMode('TUTORING')} className={`flex-1 sm:flex-none px-4 sm:px-6 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-widest transition-all ${chatMode === 'TUTORING' ? 'bg-mmsu-green text-white shadow-sm' : 'opacity-50 hover:opacity-100'}`}>Tutor</button>
+                </div>
               </div>
             </div>
             
@@ -427,8 +469,20 @@ const App = () => {
               {messages.map(m => (
                 <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'} animate-fadeIn`}>
                   <div className={`max-w-[90%] sm:max-w-[80%] flex flex-col ${m.role === 'user' ? 'items-end' : 'items-start'}`}>
-                    <div className={`p-4 sm:p-6 rounded-[1.5rem] sm:rounded-[2rem] shadow-md text-xs sm:text-sm leading-relaxed ${m.role === 'user' ? 'bg-mmsu-green text-white rounded-tr-none' : 'bg-white dark:bg-slate-800 border dark:border-white/5 rounded-tl-none text-slate-700 dark:text-slate-200'}`}>
+                    <div className={`group relative p-4 sm:p-6 rounded-[1.5rem] sm:rounded-[2rem] shadow-md text-xs sm:text-sm leading-relaxed ${m.role === 'user' ? 'bg-mmsu-green text-white rounded-tr-none' : 'bg-white dark:bg-slate-800 border dark:border-white/5 rounded-tl-none text-slate-700 dark:text-slate-200'}`}>
                       <p className="whitespace-pre-wrap">{m.content}</p>
+                      {m.role === 'assistant' && (
+                        <button 
+                          onClick={() => {
+                            navigator.clipboard.writeText(m.content);
+                            addToast('Copied to clipboard!');
+                          }}
+                          className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 p-2 text-slate-400 hover:text-mmsu-gold transition-all"
+                          title="Copy to clipboard"
+                        >
+                          <i className="fas fa-copy text-[10px]"></i>
+                        </button>
+                      )}
                       {m.links && m.links.length > 0 && (
                         <div className="mt-4 pt-3 border-t border-slate-100 dark:border-white/10 flex flex-wrap gap-2">
                           {m.links.map((l, i) => (
@@ -556,7 +610,10 @@ const App = () => {
               </div>
             </div>
             <button 
-              onClick={() => setShowProfile(false)} 
+              onClick={() => {
+                setShowProfile(false);
+                addToast('Identity Synchronized!');
+              }} 
               disabled={!/^\d{2}-\d{6}$/.test(user.studentId || '')}
               className="w-full py-4 sm:py-5 mt-8 sm:mt-10 bg-mmsu-green text-white rounded-xl sm:rounded-[1.5rem] font-black uppercase tracking-[0.3em] text-[10px] sm:text-xs shadow-2xl shadow-mmsu-green/30 hover:scale-[1.02] active:scale-95 transition-all border border-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
             >
@@ -564,6 +621,26 @@ const App = () => {
             </button>
           </div>
         </div>
+      )}
+
+      {/* Toast Container */}
+      <div className="fixed top-24 right-6 z-[300] flex flex-col gap-3 pointer-events-none">
+        {toasts.map(toast => (
+          <div key={toast.id} className="bg-mmsu-green text-white px-6 py-3 rounded-2xl shadow-2xl border border-mmsu-gold/30 animate-fadeIn pointer-events-auto flex items-center gap-3">
+            <i className="fas fa-check-circle text-mmsu-gold"></i>
+            <span className="text-[10px] font-black uppercase tracking-widest">{toast.message}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Scroll to Top Button */}
+      {showScrollTop && (activeTab === 'home' || activeTab === 'calendar') && (
+        <button 
+          onClick={scrollToTop}
+          className="fixed bottom-24 right-6 sm:bottom-32 sm:right-10 w-12 h-12 bg-mmsu-green text-mmsu-gold rounded-full shadow-4xl flex items-center justify-center z-[140] hover:scale-110 active:scale-95 transition-all animate-fadeIn border border-mmsu-gold/20"
+        >
+          <i className="fas fa-arrow-up"></i>
+        </button>
       )}
     </div>
   );
