@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { UserProfile, College, Campus } from '../types';
 import { COLLEGES } from '../constants';
@@ -50,9 +49,11 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ user, onUpdate, on
               placeholder="e.g. 21-123456"
               value={studentId} 
               onChange={(e) => {
-                const val = e.target.value.replace(/[^0-9-]/g, '');
-                setStudentId(val);
+                const val = e.target.value.replace(/\D/g, '');
+                const formatted = val.length <= 2 ? val : `${val.slice(0, 2)}-${val.slice(2, 8)}`;
+                setStudentId(formatted);
               }}
+              maxLength={9}
               className={`w-full p-4 rounded-2xl border ${user.theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'} font-black tracking-widest focus:ring-2 focus:ring-mmsu-green outline-none transition-all`}
             />
           </div>
@@ -94,7 +95,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ user, onUpdate, on
           </button>
           <button 
             onClick={handleSave}
-            className="flex-1 bg-mmsu-green text-white py-4 rounded-2xl font-black uppercase tracking-widest text-xs shadow-xl shadow-mmsu-green/20 hover:bg-mmsu-darkGreen transition-all"
+            disabled={!/^\d{2}-\d{6}$/.test(studentId)}
+            className="flex-1 bg-mmsu-green text-white py-4 rounded-2xl font-black uppercase tracking-widest text-xs shadow-xl shadow-mmsu-green/20 hover:bg-mmsu-darkGreen transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Save Changes
           </button>
