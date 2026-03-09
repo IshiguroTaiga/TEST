@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
 import { GoogleGenAI } from "@google/genai";
@@ -63,22 +62,6 @@ const MOCK_CALENDAR_EVENTS = [
   { id: 'e6', date: '2026-03-05', title: 'Midterm Examination Week', type: 'academic' },
   { id: 'e7', date: '2026-03-06', title: 'Midterm Examination Week', type: 'academic' },
   { id: 'e8', date: '2026-03-25', title: 'University Convocation', type: 'event' },
-  { id: 'e9', date: '2026-05-01', title: 'Labor Day', type: 'holiday' },
-  { id: 'e10', date: '2026-05-27', title: 'EID AL-ADHA (TENTATIVE)', type: 'holiday' },
-  { id: 'e10', date: '2026-05-28', title: 'EID AL-ADHA DAY (TENTATIVE)', type: 'holiday' },
-  { id: 'e11', date: '2026-06-12', title: 'INDEPENDENCE DAY', type: 'holiday' },
-  { id: 'e12', date: '2026-06-17', title: 'AMUN JADID (TENTATIVE)', type: 'holiday' },
-  { id: 'e13', date: '2026-08-21', title: 'NINOY AQUINO DAY', type: 'holiday' },
-  { id: 'e14', date: '2026-08-26', title: 'Maulid un-Nabi (TENTATIVE)', type: 'holiday' },
-  { id: 'e15', date: '2026-08-31', title: 'NATIONAL HEROES DAY', type: 'holiday' },
-  { id: 'e16', date: '2026-11-01', title: 'All Saints Day', type: 'holiday' },
-  { id: 'e17', date: '2026-11-02', title: 'All Souls Day', type: 'holiday' },
-  { id: 'e18', date: '2026-11-30', title: 'Bonifacio Day', type: 'holiday' },
-  { id: 'e19', date: '2026-12-08', title: 'Feast of the Immaculate Conception', type: 'holiday' },
-  { id: 'e20', date: '2026-12-24', title: 'Christmas Eve', type: 'holiday' },
-  { id: 'e21', date: '2026-12-25', title: 'Christmas Day', type: 'holiday' },
-  { id: 'e22', date: '2026-12-30', title: 'Rizal Day', type: 'holiday' },
-  { id: 'e23', date: '2026-12-31', title: 'New Years Eve', type: 'holiday' },
 ];
 
 const Calendar = ({ isDark }: { isDark: boolean }) => {
@@ -293,7 +276,7 @@ const App = () => {
 
       const ai = new GoogleGenAI({ apiKey });
       const response = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
+        model: 'gemini-flash-latest',
         contents: messages.filter(m => m.id !== '1').slice(-5).map(m => ({
           role: m.role === 'user' ? 'user' : 'model',
           parts: [{ text: m.content }]
@@ -558,9 +541,11 @@ const App = () => {
                   placeholder="e.g. 22-123456" 
                   value={user.studentId} 
                   onChange={e => {
-                    const val = e.target.value.replace(/[^0-9-]/g, '');
-                    setUser(p => ({...p, studentId: val}));
+                    const val = e.target.value.replace(/\D/g, '');
+                    const formatted = val.length <= 2 ? val : `${val.slice(0, 2)}-${val.slice(2, 8)}`;
+                    setUser(p => ({...p, studentId: formatted}));
                   }} 
+                  maxLength={9}
                 />
               </div>
               <div className="space-y-1 sm:space-y-2">
@@ -570,7 +555,13 @@ const App = () => {
                 </select>
               </div>
             </div>
-            <button onClick={() => setShowProfile(false)} className="w-full py-4 sm:py-5 mt-8 sm:mt-10 bg-mmsu-green text-white rounded-xl sm:rounded-[1.5rem] font-black uppercase tracking-[0.3em] text-[10px] sm:text-xs shadow-2xl shadow-mmsu-green/30 hover:scale-[1.02] active:scale-95 transition-all border border-white/10">Synchronize Identity</button>
+            <button 
+              onClick={() => setShowProfile(false)} 
+              disabled={!/^\d{2}-\d{6}$/.test(user.studentId || '')}
+              className="w-full py-4 sm:py-5 mt-8 sm:mt-10 bg-mmsu-green text-white rounded-xl sm:rounded-[1.5rem] font-black uppercase tracking-[0.3em] text-[10px] sm:text-xs shadow-2xl shadow-mmsu-green/30 hover:scale-[1.02] active:scale-95 transition-all border border-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Synchronize Identity
+            </button>
           </div>
         </div>
       )}
